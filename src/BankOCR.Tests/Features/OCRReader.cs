@@ -80,38 +80,47 @@ namespace BankOCR.Tests
 			string line = _innerReader.ReadLine();
 			while ( line != null) 
 			{
-                if (line != "")
-                {
-                    for (int i = 0; i < 9; i++)
-                    {
-                        if (digits[i] == null)
-                        {
-                            digits[i] = "";
-                        }
-                        digits[i] += new String(line.Skip(i * 3).Take(3).ToArray());
-                    }
-                }
-
+			    if (!String.IsNullOrWhiteSpace(line))
+			    {
+			        for (int i = 0; i < 9; i++)
+			        {
+			            if (digits[i] == null)
+			            {
+			                digits[i] = "";
+			            }
+			            digits[i] += new String(line.Skip(i*3).Take(3).ToArray());
+			        }
+			    }
+			    else
+			    {
+			        yield return ParseDigits(digits);
+			        digits = new string[9];
+			    }
 				line = _innerReader.ReadLine ();
 			}
-			
-          
 
-		    yield return Int32.Parse(digits.Aggregate("", (accountNumber, digit) =>
-		    {
-		        if (_conversionData.ContainsKey(digit))
-		        {
-		            return accountNumber + _conversionData[digit];
-		        }
-		        else
-		        {
-		            PrintEntry(digit);
-		            throw new ArgumentException("Invalid digit string '" + digit + "'");
-		        }
-		    }));
+		    yield return ParseDigits(digits);
+
+
+
 
 		}
 
+	    private int ParseDigits(string[] digits)
+	    {
+            return Int32.Parse(digits.Aggregate("", (accountNumber, digit) =>
+            {
+                if (_conversionData.ContainsKey(digit))
+                {
+                    return accountNumber + _conversionData[digit];
+                }
+                else
+                {
+                    PrintEntry(digit);
+                    throw new ArgumentException("Invalid digit string '" + digit + "'");
+                }
+            }));
+	    }
 
         public void PrintEntry(string entry) {
 
