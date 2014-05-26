@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 
@@ -71,6 +72,23 @@ namespace BankOCR
 		{
 			_innerReader = reader;	
 		}
+
+	    public void WriteAccountNumber(int accountNumber, TextWriter writer)
+	    {
+	        string line1 = "", line2 = "", line3 = "";
+	        foreach (var c in accountNumber.ToString(CultureInfo.InvariantCulture))
+	        {
+	            var template = _conversionData.First(x => x.Value == c.ToString(CultureInfo.InvariantCulture));
+	            line1 += template.Key.Substring(0, 3);
+	            line2 += template.Key.Substring(3, 3);
+	            line3 += template.Key.Substring(6, 3);
+	        }
+
+	        writer.WriteLine(line1);
+	        writer.WriteLine(line2);
+	        writer.WriteLine(line3);
+	        writer.WriteLine();
+	    }
 
 		public IEnumerable<int> AccountNumbers ()
 		{
