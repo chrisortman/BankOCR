@@ -1,10 +1,9 @@
-﻿using System;
-using NUnit.Framework;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
+using NUnit.Framework;
 using Shouldly;
 
-namespace BankOCR.Tests
+namespace BankOCR.Tests.Features
 {
 	[TestFixture]
 	public class ReadAFile
