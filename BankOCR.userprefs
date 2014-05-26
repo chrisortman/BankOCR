@@ -1,0 +1,31 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="src/BankOCR.Tests/Features/OCRReader.cs">
+    <Files>
+      <File FileName="src/BankOCR.Tests/Features/ReadAFile.cs" Line="23" Column="1" />
+      <File FileName="src/BankOCR.Tests/Features/OCRReader.cs" Line="83" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="MonoDevelop.NUnit.TestPad">
+        <State expanded="True">
+          <Node name="BankOCR.Tests" expanded="True">
+            <Node name="BankOCR" expanded="True">
+              <Node name="Tests" expanded="True">
+                <Node name="ReadAFile" expanded="True">
+                  <Node name="Can_read_file_with_all_ten_digits" selected="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/chris/code/BankOCR/src/BankOCR.Tests/Features/ReadAFile.cs" line="23" column="1" />
+      <Breakpoint file="/Users/chris/code/BankOCR/src/BankOCR.Tests/Features/OCRReader.cs" line="112" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
