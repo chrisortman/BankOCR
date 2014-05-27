@@ -32,6 +32,8 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CheckSumValidator.cs" />
+    <Compile Include="OCRApp.cs" />
     <Compile Include="OCRReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

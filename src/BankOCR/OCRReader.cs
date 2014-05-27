@@ -10,6 +10,11 @@ namespace BankOCR
     {
         private TextReader _innerReader;
 
+        private const string zero =
+            " _ " +
+            "| |" +
+            "|_|";
+
         private const string one =
             "   " +
             "  |" +
@@ -57,15 +62,16 @@ namespace BankOCR
 
         private Dictionary<string, string> _conversionData = new Dictionary<string, string>()
         {
-            {one, "1"},
-            {two, "2"},
+            {zero,  "0"},
+            {one,   "1"},
+            {two,   "2"},
             {three, "3"},
-            {four, "4"},
-            {five, "5"},
-            {six, "6"},
+            {four,  "4"},
+            {five,  "5"},
+            {six,   "6"},
             {seven, "7"},
             {eight, "8"},
-            {nine, "9"},
+            {nine,  "9"},
         };
 
         public OCRReader(TextReader reader)
@@ -90,7 +96,7 @@ namespace BankOCR
             writer.WriteLine();
         }
 
-        public IEnumerable<int> AccountNumbers()
+        public IEnumerable<string> AccountNumbers()
         {
             string[] digits = new string[9];
 
@@ -116,10 +122,13 @@ namespace BankOCR
                 line = _innerReader.ReadLine();
             }
 
-            yield return ParseDigits(digits);
+            if (digits[0] != null)
+            {
+                yield return ParseDigits(digits);
+            }
         }
 
-        private int ParseDigits(string[] digits)
+        private string ParseDigits(string[] digits)
         {
             return Int32.Parse(digits.Aggregate("", (accountNumber, digit) =>
             {
@@ -132,7 +141,7 @@ namespace BankOCR
                     PrintEntry(digit);
                     throw new ArgumentException("Invalid digit string '" + digit + "'");
                 }
-            }));
+            })).ToString(CultureInfo.InvariantCulture);
         }
 
         public void PrintEntry(string entry)

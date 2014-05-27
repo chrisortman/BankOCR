@@ -37,6 +37,21 @@ namespace BankOCR.App
 
                     
                 }
+                else if (args[0].Equals("checksum_sample"))
+                {
+                    Console.WriteLine("Generating sample file for checksum validation checksum_sample.txt");
+                    using (var file = File.OpenWrite("checksum_sample.txt"))
+                    {
+                        using (var writer = new StreamWriter(file))
+                        {
+                            var ocr = new OCRReader(null);
+                            foreach (var accountNumber in new[] { 457508000, 664371495 })
+                            {
+                                ocr.WriteAccountNumber(accountNumber, writer);
+                            }
+                        }
+                    } 
+                }
                 else
                 {
                     if (File.Exists(args[0]))
@@ -51,6 +66,7 @@ namespace BankOCR.App
                             }
                         }
                     }
+                   
                 }
             }
 
