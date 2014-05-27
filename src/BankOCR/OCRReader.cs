@@ -68,7 +68,7 @@ namespace BankOCR
             {nine,"9"},
         };
 
-		public OCRReader (StringReader reader)
+		public OCRReader (TextReader reader)
 		{
 			_innerReader = reader;	
 		}
