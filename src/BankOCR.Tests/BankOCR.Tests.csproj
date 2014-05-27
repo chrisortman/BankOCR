@@ -38,6 +38,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Features\AccountNumberValidation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Features\ReadAFile.cs" />
   </ItemGroup>
