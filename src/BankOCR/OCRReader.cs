@@ -130,7 +130,7 @@ namespace BankOCR
 
         private string ParseDigits(string[] digits)
         {
-            return Int32.Parse(digits.Aggregate("", (accountNumber, digit) =>
+            return digits.Aggregate("", (accountNumber, digit) =>
             {
                 if (_conversionData.ContainsKey(digit))
                 {
@@ -138,10 +138,9 @@ namespace BankOCR
                 }
                 else
                 {
-                    PrintEntry(digit);
-                    throw new ArgumentException("Invalid digit string '" + digit + "'");
+                    return accountNumber + "?";
                 }
-            })).ToString(CultureInfo.InvariantCulture);
+            });
         }
 
         public void PrintEntry(string entry)

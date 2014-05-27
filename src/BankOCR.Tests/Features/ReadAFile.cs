@@ -63,5 +63,35 @@ namespace BankOCR.Tests.Features
 
             output.ToString().ShouldBe(expected); 
         }
+
+        [Test]
+        public void Reads_a_file_with_invalid_data_and_reports_status()
+        {
+            var output = new StringBuilder();
+
+            var ocrApp = new OCRApp();
+            using (var reader = new StringReader("    _  _        _  _  _  _ \n" +
+                                                 "  | _| _||_||_ |_   ||_||_|\n" +
+                                                 "  ||   _|  | _||_|  ||_| _|\n" +
+                                                 "                           \n" +
+                                                 "    _  _     _  _  _  _  _ \n" +
+                                                 "|_| _| _||_||_ |_   ||_||_|\n" +
+                                                 "  ||_  _|  | _||_|  ||_||_|\n"))
+            using (var writer = new StringWriter(output))
+            {
+                ocrApp.InputFile = reader;
+                ocrApp.OutputFile = writer;
+
+                ocrApp.ValidateInputFiles();
+
+                writer.Flush();
+            }
+
+            var expected =
+                "1?34?6789 ILL" + Environment.NewLine +
+                "423456788 ERR" + Environment.NewLine;
+
+            output.ToString().ShouldBe(expected); 
+        }
     }
 }
