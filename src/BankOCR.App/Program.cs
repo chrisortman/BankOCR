@@ -52,21 +52,46 @@ namespace BankOCR.App
                         }
                     } 
                 }
-                else
+                else if(args.Length > 1)
                 {
-                    if (File.Exists(args[0]))
-                    {
-                        using (var reader = new StreamReader(args[0]))
-                        {
-                            var ocrReader = new OCRReader(reader);
+                    var command = args[0];
+                    var inputFile = args[1];
 
-                            foreach (var accountNumber in ocrReader.AccountNumbers())
+                    if (!File.Exists(inputFile))
+                    {
+                        Console.WriteLine("Invalid input file {0}",inputFile);
+                    }
+
+                    var inputStream = new StreamReader(inputFile);
+                    try
+                    {
+                        var app = new OCRApp()
+                        {
+                            InputFile = inputStream,
+                        };
+                        if (command == "print")
+                        {
+                            app.OutputFile = Console.Out;
+                            app.PrintAccountNumbers();
+                        }
+                        else if (command == "validate")
+                        {
+                            Console.WriteLine("Validating input file {0}", Path.GetFileName(inputFile));
+                            string outputFile = Path.ChangeExtension(inputFile, "validated");
+                            using (var outputStream = new StreamWriter(outputFile))
                             {
-                                Console.WriteLine(accountNumber);
+                                app.OutputFile = outputStream;
+                                app.ValidateInputFiles();
                             }
+
+                            Console.WriteLine("File validated. Output written to {0}",Path.GetFileName(outputFile));
                         }
                     }
-                   
+                    finally
+                    {
+                        inputStream.Dispose();
+                    }
+                    
                 }
             }
 
