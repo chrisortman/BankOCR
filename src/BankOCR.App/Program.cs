@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BankOCR.App
 {
@@ -34,8 +31,6 @@ namespace BankOCR.App
                             }
                         }
                     }
-
-                    
                 }
                 else if (args[0].Equals("checksum_sample"))
                 {

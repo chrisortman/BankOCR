@@ -8,6 +8,9 @@ namespace BankOCR
 
         public void PrintAccountNumbers()
         {
+            Guard.Requires(InputFile != null,"Must supply an input file");
+            Guard.Requires(OutputFile != null, "Must supply an output file");
+
             var reader = new OCRReader(InputFile);
             foreach (var accountNumber in reader.AccountNumbers())
             {
@@ -17,6 +20,9 @@ namespace BankOCR
 
         public void ValidateInputFiles()
         {
+            Guard.Requires(InputFile != null, "Must supply an input file");
+            Guard.Requires(OutputFile != null, "Must supply an output file");
+
             var reader = new OCRReader(InputFile);
             var validator = new CheckSumValidator();
             foreach (var accountNumber in reader.AccountNumbers())

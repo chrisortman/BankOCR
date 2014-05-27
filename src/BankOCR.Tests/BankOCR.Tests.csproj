@@ -41,6 +41,7 @@
     <Compile Include="Features\AccountNumberValidation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Features\ReadAFile.cs" />
+    <Compile Include="Units\OCRAppTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
