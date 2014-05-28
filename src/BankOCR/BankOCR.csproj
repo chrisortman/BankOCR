@@ -36,6 +36,7 @@
     <Compile Include="Guard.cs" />
     <Compile Include="OCRApp.cs" />
     <Compile Include="OCRReader.cs" />
+    <Compile Include="OCRWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
