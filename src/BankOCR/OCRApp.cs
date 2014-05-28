@@ -13,7 +13,7 @@ namespace BankOCR
             Guard.Requires(OutputFile != null, "Must supply an output file");
 
             var reader = new OCRReader(InputFile);
-            foreach (var accountNumber in reader.AccountNumbers())
+            foreach (var accountNumber in reader.ReadAll())
             {
                 OutputFile.WriteLine(accountNumber);
             }
@@ -26,7 +26,7 @@ namespace BankOCR
 
             var reader = new OCRReader(InputFile);
             var validator = new CheckSumValidator();
-            foreach (var accountNumber in reader.AccountNumbers())
+            foreach (var accountNumber in reader.ReadAll())
             {
                 if (validator.IsValid(accountNumber))
                 {

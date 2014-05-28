@@ -24,10 +24,10 @@ namespace BankOCR.App
                     {
                         using (var writer = new StreamWriter(file))
                         {
-                            var ocr = new OCRReader(null);
+                            var ocr = new OCRWriter(writer);
                             foreach (var accountNumber in accountNumbers)
                             {
-                                ocr.WriteAccountNumber(accountNumber, writer);
+                                ocr.Write(accountNumber);
                             }
                         }
                     }
@@ -39,10 +39,10 @@ namespace BankOCR.App
                     {
                         using (var writer = new StreamWriter(file))
                         {
-                            var ocr = new OCRReader(null);
-                            foreach (var accountNumber in new[] { 457508000, 664371495 })
+                            var ocr = new OCRWriter(writer);
+                            foreach (var accountNumber in new[] { "457508000", "664371495" })
                             {
-                                ocr.WriteAccountNumber(accountNumber, writer);
+                                ocr.Write(accountNumber);
                             }
                         }
                     } 
@@ -97,7 +97,7 @@ namespace BankOCR.App
             Console.ReadLine();
         }
 
-        private static int RandomAccountNumber(Random rnd)
+        private static string RandomAccountNumber(Random rnd)
         {
             int accountNumber = 0;
 
@@ -106,7 +106,7 @@ namespace BankOCR.App
                 accountNumber += (rnd.Next(1, 9)*i);
             }
 
-            return accountNumber;
+            return accountNumber.ToString();
         }
     }
 }

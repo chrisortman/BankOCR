@@ -7,6 +7,12 @@ namespace BankOCR
 {
     public class Digit
     {
+        /// <summary>
+        /// Number of characters used to store a single
+        /// row of a single digit
+        /// </summary>
+        public const int Width = 3;
+
         private const string zero =
             " _ " +
             "| |" +
