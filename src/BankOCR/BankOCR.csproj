@@ -33,6 +33,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CheckSumValidator.cs" />
+    <Compile Include="Digit.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="OCRApp.cs" />
     <Compile Include="OCRReader.cs" />
