@@ -9,7 +9,6 @@ namespace BankOCR
     public class OCRReader
     {
         private readonly TextReader _innerReader;
-       
 
         public OCRReader(TextReader reader)
         {
@@ -18,12 +17,74 @@ namespace BankOCR
 
         public void WriteAccountNumber(string accountNumber, TextWriter writer)
         {
-            string line1 = "", line2 = "", line3 ="";
-            foreach (var c in accountNumber)
+            AccountNumber.Parse(accountNumber).WritePipesAndDashes(writer);
+        }
+
+        public IEnumerable<string> AccountNumbers()
+        {
+            while (_innerReader.Peek() != -1)
             {
-                var digit = Digit.FromChar(c);
+                var accountNumber = new AccountNumber(9);
+                accountNumber.Read(_innerReader);
+                yield return accountNumber.ToString();
+            }
+        }
+    }
 
+    public class AccountNumber
+    {
+        private Digit[] _digits;
 
+        public static AccountNumber Parse(string accountNumberDigits)
+        {
+            var digitArr = new Digit[accountNumberDigits.Length];
+            for (int i = 0; i < accountNumberDigits.Length; i++)
+            {
+                digitArr[i] = Digit.FromChar(accountNumberDigits[i]);
+            }
+
+            return new AccountNumber(digitArr);
+            
+        }
+        public AccountNumber(int numDigits = 9)
+        {
+            _digits = new Digit[numDigits];
+        }
+
+        private AccountNumber(Digit[] digits)
+        {
+            Guard.AgainstNull(digits, "digits");
+
+            _digits = digits;
+        }
+
+        public void Read(TextReader reader)
+        {
+            string[] lines = new string[3];
+            lines[0] = reader.ReadLine();
+            lines[1] = reader.ReadLine();
+            lines[2] = reader.ReadLine();
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                for (int j = 0; j < _digits.Length; j++)
+                {
+                    if (_digits[i] == null)
+                    {
+                        _digits[i] = new Digit();
+                    }
+                    _digits[i].AddChars(lines[i].Skip(i * 3).Take(3)); 
+                }
+            }
+
+            reader.ReadLine(); //Read the blank
+        }
+
+        public void WritePipesAndDashes(TextWriter writer)
+        {
+            string line1 = "", line2 = "", line3 = "";
+            foreach (var digit in _digits)
+            {
                 line1 += digit.Line1;
                 line2 += digit.Line2;
                 line3 += digit.Line3;
@@ -32,46 +93,12 @@ namespace BankOCR
             writer.WriteLine(line1);
             writer.WriteLine(line2);
             writer.WriteLine(line3);
-            writer.WriteLine();
+            writer.WriteLine(); 
         }
 
-        public IEnumerable<string> AccountNumbers()
+        public override string ToString()
         {
-            var digits = new Digit[9];
-
-            string line = _innerReader.ReadLine();
-            while (line != null)
-            {
-                if (!String.IsNullOrWhiteSpace(line))
-                {
-                    for (int i = 0; i < 9; i++)
-                    {
-                        if (digits[i] == null)
-                        {
-                            digits[i] = new Digit();
-                        }
-                        digits[i].AddChars(line.Skip(i*3).Take(3));
-                    }
-                }
-                else
-                {
-                    yield return ParseDigits(digits);
-                    digits = new Digit[9];
-                }
-                line = _innerReader.ReadLine();
-            }
-
-            if (digits[0] != null)
-            {
-                yield return ParseDigits(digits);
-            }
+            return _digits.Aggregate("", (accountNumber, digit) => accountNumber + digit.ToChar()); 
         }
-
-        private string ParseDigits(Digit[] digits)
-        {
-            return digits.Aggregate("", (accountNumber, digit) => accountNumber + digit.ToChar());
-        }
-
-       
     }
 }
