@@ -48,10 +48,67 @@ namespace BankOCR
             }
         }
 
+        public IEnumerable<string> ReadAll2()
+        {
+            var reader = new MultilineReaderBuffer<Digit[]>();
+            reader.ReadLinesUntil( String.IsNullOrWhiteSpace);
+            reader.ProcessLinesWith(readLines =>
+            {
+                var digits = new Digit[_accountNumberLength];
+
+                for (int i = 0; i < _accountNumberLength; i++)
+                {
+                    digits[i] = new Digit();
+                    foreach (var line in readLines)
+                    {
+                        digits[i].AddChars(line.Skip(i*Digit.Width).Take(Digit.Width));
+                    }
+                }
+
+                return digits;
+            });
+
+            return reader.ReadAllFromInput(_innerReader).Select(ParseDigits);
+        }
+
 
         private string ParseDigits(IEnumerable<Digit> digits)
         {
             return digits.Aggregate("", (accountNumber, digit) => accountNumber + digit.ToChar());
+        }
+    }
+
+    public class MultilineReaderBuffer<T>
+    {
+        private Func<string, bool> _doneReading;
+        private Func<string[],T> _process;
+
+        public void ReadLinesUntil(Func<string, bool> condition)
+        {
+            _doneReading = condition;
+        }
+
+        public void ProcessLinesWith(Func<string[],T> action)
+        {
+            _process = action;
+        }
+
+        public IEnumerable<T> ReadAllFromInput(TextReader input)
+        {
+            var buffer = new List<string>();
+            while (input.Peek() != -1)
+            {
+                var line = input.ReadLine();
+                if (_doneReading(line))
+                {
+                    yield return _process(buffer.ToArray());
+                    buffer.Clear();
+                }
+                else
+                {
+                    buffer.Add(line);
+                }
+            }
         }
     }
 }
